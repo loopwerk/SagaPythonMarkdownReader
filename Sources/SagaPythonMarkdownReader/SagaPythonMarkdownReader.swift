@@ -1,7 +1,6 @@
 import Foundation
 import Saga
 import SwiftMarkdown
-import PathKit
 
 let config = [
   "codehilite": [
