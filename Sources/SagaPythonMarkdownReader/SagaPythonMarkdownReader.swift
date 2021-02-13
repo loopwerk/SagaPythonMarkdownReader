@@ -7,13 +7,14 @@ let config = [
     "css_class": "highlight"
   ]
 ]
+
 let parser = try! SwiftMarkdown(
   extensions: [.nl2br, .fencedCode, .codehilite, .strikethrough, .title, .meta, .saneLists, .urlize],
   extensionConfig: config
 )
 
 public extension Reader {
-  static func pythonMarkdownReader(pageProcessor: ((Page<M>) -> Void)? = nil) -> Self {
+  static func pythonMarkdownReader(itemProcessor: ((Item<M>) -> Void)? = nil) -> Self {
     Reader(supportedExtensions: ["md", "markdown"], convert: { absoluteSource, relativeSource, relativeDestination in
       let contents: String = try absoluteSource.read()
       
@@ -26,7 +27,7 @@ public extension Reader {
       let metadata = try M.init(from: decoder)
 
       // Create the Page
-      let page = Page(
+      let item = Item(
         relativeSource: relativeSource,
         relativeDestination: relativeDestination,
         title: markdown.title ?? absoluteSource.lastComponentWithoutExtension,
@@ -37,12 +38,12 @@ public extension Reader {
         metadata: metadata
       )
 
-      // Run the processor, if any, to modify the Page
-      if let pageProcessor = pageProcessor {
-        pageProcessor(page)
+      // Run the processor, if any, to modify the Item
+      if let itemProcessor = itemProcessor {
+        itemProcessor(item)
       }
 
-      return page
+      return item
     })
   }
 }
