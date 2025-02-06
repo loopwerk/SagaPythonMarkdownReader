@@ -9,8 +9,8 @@ Include `SagaPythonMarkdownReader` in your Package.swift as usual:
 let package = Package(
   name: "MyWebsite",
   dependencies: [
-    .package(name: "Saga", url: "https://github.com/loopwerk/Saga.git", from: "0.12.0"),
-    .package(name: "SagaPythonMarkdownReader", url: "https://github.com/loopwerk/SagaPythonMarkdownReader", from: "0.1.0"),
+    .package(name: "Saga", url: "https://github.com/loopwerk/Saga.git", from: "1.0.0"),
+    .package(name: "SagaPythonMarkdownReader", url: "https://github.com/loopwerk/SagaPythonMarkdownReader", from: "0.6.0"),
   ],
   targets: [
     .target(
@@ -20,4 +20,4 @@ let package = Package(
 )
 ```
 
-And then in your website you can `import SagaPythonMarkdownReader` and use `pythonMarkdownReader` as you would do the default `markdownReader`.
+And then in your website you can `import SagaPythonMarkdownReader` and use `pythonMarkdownReader` as your reader of choice.

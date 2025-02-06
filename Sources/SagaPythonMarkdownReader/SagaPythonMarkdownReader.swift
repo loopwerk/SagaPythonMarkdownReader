@@ -14,7 +14,7 @@ let parser = try! SwiftMarkdown(
 )
 
 public extension Reader {
-  static func pythonMarkdownReader(itemProcessor: ((Item<M>) async -> Void)? = nil) -> Self {
+  static var pythonMarkdownReader: Self {
     Reader(supportedExtensions: ["md", "markdown"], convert: { absoluteSource, relativeSource, relativeDestination in
       let contents: String = try absoluteSource.read()
       
@@ -38,11 +38,6 @@ public extension Reader {
         lastModified: absoluteSource.modificationDate ?? Date(),
         metadata: metadata
       )
-
-      // Run the processor, if any, to modify the Item
-      if let itemProcessor = itemProcessor {
-        await itemProcessor(item)
-      }
 
       return item
     })
