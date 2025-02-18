@@ -15,31 +15,10 @@ let parser = try! SwiftMarkdown(
 
 public extension Reader {
   static var pythonMarkdownReader: Self {
-    Reader(supportedExtensions: ["md", "markdown"], convert: { absoluteSource, relativeSource, relativeDestination in
+    Reader(supportedExtensions: ["md", "markdown"], convert: { absoluteSource in
       let contents: String = try absoluteSource.read()
-      
-      // First we parse the markdown file
-      let markdown = parser.markdown(contents)
-
-      // Then we try to decode the embedded metadata within the markdown (which otherwise is just a [String: String] dict)
-      let decoder = makeMetadataDecoder(for: markdown.metadata)
-      let date = try resolvePublishingDate(from: absoluteSource, decoder: decoder)
-      let metadata = try M.init(from: decoder)
-
-      // Create the Page
-      let item = Item(
-        relativeSource: relativeSource,
-        relativeDestination: relativeDestination,
-        title: markdown.title ?? absoluteSource.lastComponentWithoutExtension,
-        rawContent: contents,
-        body: markdown.html,
-        published: date,
-        created: absoluteSource.creationDate ?? Date(),
-        lastModified: absoluteSource.modificationDate ?? Date(),
-        metadata: metadata
-      )
-
-      return item
+      let document = parser.markdown(contents)
+      return (document.title, document.html, document.metadata)
     })
   }
 }
